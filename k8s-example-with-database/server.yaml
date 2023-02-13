@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: k8s-server
+  name: k8s-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: k8s-server
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: k8s-server
+    spec:
+      containers:
+        - image: mungmnb777/k8s:latest
+          name: k8s-server
+          resources: {}
+          ports:
+            - containerPort : 8080
+          env:
+          - name: DATASOURCE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: database-config
+                key: url
+          - name: DATASOURCE_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: database-config
+                key: username
+          - name: DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: database-password
+                key: password
+              

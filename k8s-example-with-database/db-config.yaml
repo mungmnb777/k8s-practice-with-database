@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-config
+data:
+  url: k8s-mariadb-clusterip:3306
+  username: root
+  database: k8s

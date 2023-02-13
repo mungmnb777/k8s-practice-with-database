@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-mariadb
+  template:
+    metadata:
+      labels:
+        app: k8s-mariadb
+    spec:
+      containers:
+      - image: mariadb:10.7 
+        name: k8s-mariadb
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: database-config
+              key: database
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-password
+              key: password
